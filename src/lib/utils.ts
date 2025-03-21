@@ -3,6 +3,18 @@ import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 import { formatDistanceToNow } from "date-fns";
 
+export interface Feed {
+  likes: string[];
+}
+
+type Following = {
+  id: string;
+  name: string;
+  occupation: string;
+  image: string;
+  followers: string[];
+};
+
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
