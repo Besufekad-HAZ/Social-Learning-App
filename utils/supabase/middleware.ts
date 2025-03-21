@@ -30,4 +30,23 @@ export async function updateSession(request: NextRequest) {
   );
 
   // 👉🏻 placeholder for protected route controller
+  //👇🏻 gets current user
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  //👇🏻 declares protected routes
+  if (
+    !user &&
+    request.nextUrl.pathname !== "/" &&
+    !request.nextUrl.pathname.startsWith("/instructor/auth") &&
+    !request.nextUrl.pathname.startsWith("/student/auth")
+  ) {
+    //👇🏻 Redirect unauthenticated users to the login page
+    const url = request.nextUrl.clone();
+    url.pathname = "/student/auth/login"; // 👈🏼 redirect page
+    return NextResponse.redirect(url);
+  }
+  //👇🏻 returns Supabase response
+  return supabaseResponse;
 }
