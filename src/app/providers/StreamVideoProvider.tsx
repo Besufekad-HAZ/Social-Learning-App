@@ -8,51 +8,49 @@ import { Loader2 } from "lucide-react";
 const apiKey = process.env.NEXT_PUBLIC_STREAM_API_KEY!;
 
 export const StreamVideoProvider = ({ children }: { children: ReactNode }) => {
-  const [videoClient, setVideoClient] = useState<StreamVideoClient | null>(
-    null
-  );
-  const supabase = createClient();
+	const [videoClient, setVideoClient] = useState<StreamVideoClient | null>(null);
+	const supabase = createClient();
 
-  const getUser = useCallback(async () => {
-    const { data, error } = await supabase.auth.getUser();
-    const { user } = data;
-    if (error || !user || !apiKey) return;
-    if (!tokenProvider) return;
+	const getUser = useCallback(async () => {
+		const { data, error } = await supabase.auth.getUser();
+		const { user } = data;
+		if (error || !user || !apiKey) return;
+		if (!tokenProvider) return;
 
-    let streamUser;
+		let streamUser;
 
-    if (user.user_metadata?.image) {
-      streamUser = {
-        id: user.id,
-        name: user.user_metadata?.name,
-        image: user.user_metadata?.image,
-      };
-    } else {
-      streamUser = {
-        id: user.id,
-        name: user.user_metadata?.name,
-      };
-    }
+		if (user.user_metadata?.image) { 
+			streamUser = {
+				id: user.id,
+				name: user.user_metadata?.name,
+				image: user.user_metadata?.image,
+			}
+		} else {
+			streamUser = {
+				id: user.id,
+				name: user.user_metadata?.name,
+			}
 
-    const client = new StreamVideoClient({
-      apiKey,
-      user: streamUser,
-      tokenProvider,
-    });
+		}
 
-    setVideoClient(client);
-  }, [supabase.auth]);
+		const client = new StreamVideoClient({
+			apiKey,
+			user: streamUser,
+			tokenProvider,
+		});
 
-  useEffect(() => {
-    getUser();
-  }, [getUser]);
+		setVideoClient(client);
+	}, [supabase.auth]);
 
-  if (!videoClient)
-    return (
-      <div className="h-screen flex items-center justify-center">
-        <Loader2 size="32" className="mx-auto animate-spin" />
-      </div>
-    );
+	useEffect(() => {
+		getUser();
+	}, [getUser]);
 
-  return <StreamVideo client={videoClient}>{children}</StreamVideo>;
+	if (!videoClient) return (
+		<div className="h-screen flex items-center justify-center">
+			<Loader2 size="32" className="mx-auto animate-spin"/>
+		</div>
+	)
+
+	return <StreamVideo client={videoClient}>{children}</StreamVideo>;
 };

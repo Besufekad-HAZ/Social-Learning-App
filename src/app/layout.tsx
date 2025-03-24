@@ -1,14 +1,11 @@
 import type { Metadata } from "next";
-import { Rubik } from "next/font/google";
+import { Rubik } from 'next/font/google'
 import "@stream-io/video-react-sdk/dist/css/styles.css";
 import "stream-chat-react/dist/css/v2/index.css";
-import { Toaster } from "@/components/ui/toaster";
+import { Toaster } from "@/components/ui/toaster"
 import "./globals.css";
 
-const inter = Rubik({
-  weight: ["300", "400", "500", "600", "700"],
-  subsets: ["latin"],
-});
+const inter = Rubik({ weight: ["300", "400", "500", "600", "700"], subsets: ['latin'] })
 
 export const metadata: Metadata = {
   title: "LinkedUp",
@@ -23,7 +20,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <main>{children}</main>
+          <main>{children}</main>
         <Toaster />
       </body>
     </html>
